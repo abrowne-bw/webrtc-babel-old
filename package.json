@@ -1,0 +1,49 @@
+{
+  "name": "callTranscriber",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify client.js -o public/compiled.js -d && browserify audioUtils.js -o public/audioUtils.js && browserify aws-signature-v4.js -o public/aws-signature-v4.js"
+  },
+  "keywords": [],
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "@babel/env"
+          ]
+        }
+      ]
+    ]
+  },
+  "author": "Andrew Browne <andrewbrowne@bandwidth.com> (http://www.bandwidth.com)",
+  "license": "ISC",
+  "description": "Real time call transcription and translation",
+  "dependencies": {
+    "@aws-sdk/client-transcribe": "^3.17.0",
+    "@aws-sdk/client-translate": "^3.17.0",
+    "@aws-sdk/eventstream-marshaller": "^3.15.0",
+    "@aws-sdk/polly-request-presigner": "^3.17.0",
+    "@aws-sdk/util-utf8-node": "^3.13.1",
+    "@bandwidth/voice": "^1.5.0",
+    "@bandwidth/webrtc": "^0.6.3",
+    "@bandwidth/webrtc-browser": "^0.9.2",
+    "aws-sdk": "^2.917.0",
+    "body-parser": "^1.19.0",
+    "browserify": "^17.0.0",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "jquery": "^3.6.0",
+    "microphone-stream": "^5.0.1",
+    "query-string": "^7.0.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.2",
+    "@babel/preset-env": "^7.14.2",
+    "babelify": "^10.0.0"
+  }
+}

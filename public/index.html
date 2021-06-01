@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+
+
+<html>
+<head>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <meta charset="utf-8">
+    <title>Bandwidth WebRTC Transcription</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script type="module" src="audioUtils.js"></script>
+    <script type="module" src="aws-signature-v4.js"></script>
+</head>
+<body>
+    <div style="margin: auto; width: 50%">
+        <h1 style="text-align: center">Real-Time Call Transcription and Translation</h1>
+        <div stye="width: 500px; height: 50px">
+            Status:<span id="call_status">Offline</span>
+        </div>
+        <div style="margin: auto; width: 100%">
+            <button id="onlineButton">Get Online</button>
+            <button id="callButton" disabled>Dial out</button>
+            <button id="endButton" disabled>End Call</button>
+        </div>
+        <div>
+            <audio id="mediaPlayer" autoplay></audio>
+            <audio id="audioPlayback" hidden="true" autoplay controls>
+                <source id="audioSource" type="audio/mp3" src="">
+            </audio>
+        </div>
+    </div>
+    <div class="container">
+        <hr/>
+        <p class="small-caps">
+            Using the <a href="https://aws.amazon.com/transcribe">Amazon Transcribe</a> WebSocket API
+        </p>
+        
+        <p>
+            Create an <a href="https://aws.amazon.com/free">AWS Account</a>, attach the necessary <a
+                href="policy.json"> IAM policy</a>, and enter your Access Id and Secret Key below.
+        </p>
+        <div id="error" class="isa_error"></div>
+
+        <div class="row">
+            <div class="col">
+                <label>Access ID:</label>
+                <input type="password" id="access_id" placeholder="ACCESS ID"/>
+
+                <label>Secret Key:</label>
+                <input type="password" id="secret_key" placeholder="SECRET KEY"/>
+                <label>Session Token (if using MFA):</label>
+                <input type="password" id="session_token" placeholder="SESSION TOKEN" value="" />
+            </div>
+            <div class="col">
+                <label>Source Language: </label>
+                <select id="language">
+                    <optgroup label="English">
+                        <option value="en-US">US English (en-US)</option>
+                        <option value="en-AU">Australian English (en-AU)</option>
+                        <option value="en-GB">British English (en-GB)</option>
+                    </optgroup>
+                    <optgroup label="French">
+                        <option value="fr-CA">Canadian French (fr-CA)</option>
+                        <option value="fr-FR">French (fr-FR)</option>
+                    </optgroup>
+                    <optgroup label="Spanish">
+                        <option value="es-US">US Spanish (es-US)</option>
+                    </optgroup>
+                </select>
+                <label>Translate to:</label>
+                <select id="translated-lang">
+                    <option value="arb">Arabic</option>
+                    <option value="cmn-CN">Mandarin</option>
+                    <option value="da-DK">Danish</option>
+                    <option value="nl-NL">Dutch</option>
+                    <option value="en-AU">English (Australian)</option>
+                    <option value="en-GB">English (British)</option>
+                    <option value="en-IN">English (Indian)</option>
+                    <option value="en-US">English (American)</option>
+                    <option value="en-GB-WLS">English (Welsh)</option>
+                    <option value="fr-FR" selected>French (Metropolitan)</option>
+                    <option value="fr-CA">French (Canadian)</option>
+                    <option value="hi-IN">Hindi</option>
+                    <option value="de-DE">German</option>
+                    <option value="is-IS">Icelandic</option>
+                    <option value="it-IT">Italian</option>
+                    <option value="ja-JP">Japanese</option>
+                    <option value="ko-KR">Korean</option>
+                    <option value="nb-NO">Norwegian</option>
+                    <option value="pl-PL">Polish</option>
+                    <option value="pt-BR">Portuguese (Brazilian)</option>
+                    <option value="pt-PT">Portuguese (European)</option>
+                    <option value="ro-RO">Romanian</option>
+                    <option value="ru-RU">Russian</option>
+                    <option value="es-ES">Spanish (European)</option>
+                    <option value="es-MX">Spanish (Mexican)</option>
+                    <option value="es-US">Spanish (US)</option>
+                    <option value="sv-SE">Swedish</option>
+                    <option value="tr-TR">Turkish</option>
+                    <option value="cy-GB">Welsh</option>
+                </select>
+                <label>Region:</label>
+                <select id="region">
+                    <option value="us-east-1">US East (N. Virginia)</option>
+                    <option value="us-east-2">US East (Ohio)</option>
+                    <option value="ap-southeast-2">Asia Pacific (Sydney)</option>
+                    <option value="ca-central-1">Canada (Central)</option>
+                    <option value="eu-west-1">EU (Ireland)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <textarea id="transcript" placeholder="Press Start Transcription and your transcript will appear here" rows=10 cols=220
+        readonly="readonly"></textarea>
+    <div class="col">
+        <button id="start-button" class="button-xl" title="Start Transcription">
+            <i class="fa fa-microphone"></i> Start Transcription
+        </button>
+        <button id="reset-button" class="button-xl button-secondary" title="Clear Transcript">
+            Clear Transcript
+        </button>
+        <button id="stop-button" class="button-xl" title="Stop Transcription" disabled="true">
+            <i class="fa fa-stop-circle"></i> Stop Transcription
+        </button>
+    </div>
+    <hr/>
+    <textarea id="translated-transcript" placeholder="When transcribing, the translated transcript will appear here" rows=10 cols=220
+        readonly="readonly"></textarea>
+    
+    <script src="compiled.js"></script>
+</body>
+
+</html>
